@@ -7,9 +7,9 @@ return [
 
         'permissions'           => 'permissions',           // 权限
 
-        'users_has_permissions' => 'user_has_permissions',  // 用户权限单独关联
+        'user_has_permissions'  => 'user_has_permissions',  // 用户权限单独关联
 
-        'users_has_roles'       => 'user_has_roles',        // 用户角色关联
+        'user_has_roles'        => 'user_has_roles',        // 用户角色关联
 
         'role_has_permissions'  => 'role_has_permissions',  // 角色权限关联
     ],

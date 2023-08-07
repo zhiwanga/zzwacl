@@ -37,13 +37,14 @@
    Route::group(['middleware' => 'zzwacl'], function () {
        Route::post('/test', [TestController::class, 'test']);
    });
+   ```
 
 ## 二. 配置
 
 1. PHP 7.2 以上版本
 2. 框架 Laravel
 3. 安装 Redis
-   
+
 ## 三. 方法
 
 1. 登录时使用 `setUserLogin` 方法设置用户缓存：
@@ -79,7 +80,9 @@
        use HasRoles;
    }
    ```
+
 ## 四. 操作
+
     ```php
     use Zzwacl\EasyACL\Models\Role;
     use Zzwacl\EasyACL\Traits\HasRoles;
@@ -130,4 +133,5 @@
      */
     $user->removePermissionsFromRole();
    ```
+
 ```

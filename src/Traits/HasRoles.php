@@ -16,7 +16,7 @@ trait HasRoles{
     {
         return $this->belongsToMany(
             config('permission.models.role'),
-            config('permission.table_names.users_has_roles'),
+            config('permission.table_names.user_has_roles'),
             config('permission.column_names.user_pivot_key'),
             config('permission.column_names.role_pivot_id')
         );
@@ -28,7 +28,7 @@ trait HasRoles{
      */
     public function userRoles()
     {
-        return $this->belongsToMany(Role::class, 'user_has_roles', config('permission.column_names.user_pivot_key'), config('permission.column_names.role_pivot_key'));
+        return $this->belongsToMany(Role::class, config('permission.table_names.user_has_roles'), config('permission.column_names.user_pivot_key'), config('permission.column_names.role_pivot_key'));
     }
 
     /**

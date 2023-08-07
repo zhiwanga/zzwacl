@@ -42,7 +42,7 @@ class CreateEasyaclTables extends Migration
         //     $table->integer('permission_id')->default(0)->comment('权限id');
         //     $table->timestamps();
         // });
-        // DB::statement("ALTER TABLE `".$tableNames['users_has_permissions']."` comment '用户权限单独关联' ENGINE = InnoDB");
+        // DB::statement("ALTER TABLE `".$tableNames['user_has_permissions']."` comment '用户权限单独关联' ENGINE = InnoDB");
 
         // 用户角色关联
         Schema::create($tableNames['user_has_roles'], function (Blueprint $table) use ($columnNames) {
@@ -50,7 +50,7 @@ class CreateEasyaclTables extends Migration
             $table->integer('role_id')->default(0)->comment('角色id');
             $table->timestamps();
         });
-        DB::statement("ALTER TABLE `".$tableNames['users_has_roles']."` comment '用户角色关联表' ENGINE = InnoDB");
+        DB::statement("ALTER TABLE `".$tableNames['user_has_roles']."` comment '用户角色关联表' ENGINE = InnoDB");
 
         // 角色权限关联
         Schema::create($tableNames['role_has_permissions'], function (Blueprint $table) {
@@ -70,8 +70,8 @@ class CreateEasyaclTables extends Migration
         $tableNames = config('permission.table_names');
 
         Schema::dropIfExists($tableNames['role_has_permissions']);
-        Schema::dropIfExists($tableNames['users_has_roles']);
-        Schema::dropIfExists($tableNames['users_has_permissions']);
+        Schema::dropIfExists($tableNames['user_has_roles']);
+        Schema::dropIfExists($tableNames['user_has_permissions']);
         Schema::dropIfExists($tableNames['roles']);
         Schema::dropIfExists($tableNames['permissions']);
     }
