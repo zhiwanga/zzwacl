@@ -26,4 +26,7 @@ return [
         'permission'    => Zzwacl\EasyACL\Models\Permission::class,
         'role'          => Zzwacl\EasyACL\Models\Role::class,
     ],
+
+    // 登录有效期
+    'login_cache_duration' => 86400 * 30,
 ];

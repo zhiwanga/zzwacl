@@ -20,7 +20,7 @@ class Permission extends Model
     public function hasRoutePermission($user, $routeName)
     {
         $user = json_decode($user, true);
-        $roles = (new Role())->getPermissionsForRoles($user['role']);
+        $roles = (new Role())->getPermissionsForRoles($user['roles']);
 
         if (in_array($routeName, $roles)) {
             return true;

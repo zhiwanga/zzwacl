@@ -16,14 +16,17 @@ class ZzwaclMiddleware
             return response()->json(['code' => 401, 'message' => '未登录']);
         }else{
             $user = Redis::get($accessToken);
-            $permission = new Permission();
+            if(!$user) {
+                return response()->json(['code' => 401, 'message' => '登录已过期']);
+            }else{
+                $permission = new Permission();
             
-            $routePath = trim($request->getPathInfo(), '\/');
-
-            if(!$permission->hasRoutePermission($user, $routePath)) {
-                return response()->json(['code' => 403, 'message' => '权限不足，'.$routePath]);
+                $routePath = trim($request->getPathInfo(), '\/');
+                if(!$permission->hasRoutePermission($user, $routePath)) {
+                    return response()->json(['code' => 403, 'message' => '权限不足，'.$routePath]);
+                }
+                return $next($request);
             }
-            return $next($request);
         }
     }
 }

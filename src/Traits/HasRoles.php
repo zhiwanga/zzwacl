@@ -4,7 +4,6 @@ namespace Zzwacl\EasyACL\Traits;
 
 use Illuminate\Support\Facades\Redis;
 use Zzwacl\EasyACL\Models\Role;
-use Illuminate\Support\Str;
 
 trait HasRoles{
     use HasPermissions;
@@ -43,7 +42,7 @@ trait HasRoles{
 
         $jsonUser = json_encode($user);
         $token = md5($jsonUser.time());
-        Redis::set($token, $jsonUser);
+        Redis::set($token, $jsonUser, config('permission.login_cache_duration'));
 
         return $token;
     }
