@@ -23,7 +23,7 @@ class Role extends Model
     }
 
     /**
-     * 获取角色权限 （选字段会影响缓存默认所有字段）
+     * 获取角色权限 （选字段会影响缓存，默认所有字段）
      * @param integer $roleId
      * @param integer $type 1：所有权限数据，1<：角色路由
      * @return array

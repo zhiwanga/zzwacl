@@ -27,4 +27,18 @@ class Permission extends Model
         }
         return false;
     }
+
+    /**
+     * 权限关联角色
+     * @return \Illuminate\Support\Collection
+     */
+    public function privileges()
+    {
+        return $this->belongsToMany(
+            config('permission.models.role'),
+            config('permission.table_names.role_has_permissions'),
+            config('permission.column_names.permission_pivot_key'),
+            config('permission.column_names.role_pivot_key')
+        );
+    }
 }

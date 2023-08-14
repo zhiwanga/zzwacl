@@ -80,6 +80,16 @@
        use HasRoles;
    }
    ```
+3. 修改，删除角色时需要调用此方法，管理缓存
+
+   ```php
+   $user->removePermissionsFromRole();
+   ```
+
+4. 添加，修改，删除权限时需要调用此方法，管理缓存
+   ```php
+   $user->removeRoleFromPermissions();
+   ```
 
 ## 四. 操作
 
@@ -132,6 +142,8 @@
      * @return integer
      */
     $user->removePermissionsFromRole();
+
+
    ```
 
 ```
