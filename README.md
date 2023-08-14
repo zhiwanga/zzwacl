@@ -13,13 +13,13 @@
 
 2. 执行以下命令发布资源文件并迁移数据库和配置文件：
 
-   ```bash
+   ```php
    php artisan vendor:publish --provider="Zzwacl\EasyACL\EasyACLServiceProvider"
    ```
 
 3. 运行数据库迁移以创建所需的数据表：
 
-   ```bash
+   ```php
    php artisan migrate
    ```
 
