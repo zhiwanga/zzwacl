@@ -50,24 +50,24 @@
 1. 登录时使用 `setUserLogin` 方法设置用户缓存：
 
    ```php
-    $userModel = new UsersModel();
-    $user = $userModel->where('account', $requestData['account'])->orWhere('phone', $requestData['account'])->first();
-    if ($user && Hash::check($requestData['password'], $user->password)) {
+   $userModel = new UsersModel();
+   $user = $userModel->where('account', $requestData['account'])->orWhere('phone', $requestData['account'])->first();
+   if ($user && Hash::check($requestData['password'], $user->password)) {
 
-        // $oldToken = $user->access_token;
+      // $oldToken = $user->access_token;
 
-        // 生成token，用户信息保存至缓存
-        $token = $user->setUserLogin();
+      // 生成token，用户信息保存至缓存
+      $token = $user->setUserLogin();
 
-        // $user->update(['access_token' => $token]);
+      // $user->update(['access_token' => $token]);
 
-        // 是否单点登录
-        // if($this->single) Redis::del($oldToken);
+      // 是否单点登录
+      // if($this->single) Redis::del($oldToken);
 
-        // 成功结果
-    }else{
-        // 失败结果
-    }
+      // 成功结果
+   }else{
+      // 失败结果
+   }
    ```
 
 2. 对需要验证权限的 `User` 模型引入 `HasRoles` trait：
@@ -93,57 +93,62 @@
 
 ## 四. 操作
 
-    ```php
-    use Zzwacl\EasyACL\Models\Role;
-    use Zzwacl\EasyACL\Traits\HasRoles;
+   ```php
+   use Zzwacl\EasyACL\Models\Role;
+   use Zzwacl\EasyACL\Traits\HasRoles;
 
-    $roleModel = new Role;
-    /**
-     * 获取角色权限
-     * @param integer $roleId
-     * @param integer $type 1：所有权限数据，1<：角色路由
-     * @return array
-     */ 
-    $roleModel->getPermissionsForRole();
-    /**
-     * 获取多个角色权限路由
-     * @param array $roleIds
-     * @return array
-     */
-    $roleModel->getPermissionsForRoles();
-
-
-    $userModel = new UsersModel;
-    $user = $userModel->find(1);
-
-    /**
-     * 获取用户的角色
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    $roles = $user->userRoles()->pluck('name');
-
-    /**
-     * 获取用户所有权限
-     * @return \Illuminate\Support\Collection
-     */
-    $roles = $user->permissionsOwned()->pluck('admin_route');
-
-    /**
-     * 角色绑定权限（追加形式）
-     * @param integer $roleId
-     * @param array $permissions 权限数组
-     * @return null
-     */
-    $user->assignPermissionsToRole();
-
-    /**
-     * 角色移除全部权限
-     * @param integer $roleId
-     * @return integer
-     */
-    $user->removePermissionsFromRole();
+   $roleModel = new Role;
+   /**
+    * 获取角色权限
+    * @param integer $roleId
+    * @param integer $type 1：所有权限数据，1<：角色路由
+    * @return array
+    */ 
+   $roleModel->getPermissionsForRole();
+   /**
+    * 获取多个角色权限路由
+    * @param array $roleIds
+    * @return array
+    */
+   $roleModel->getPermissionsForRoles();
 
 
+   $userModel = new UsersModel;
+   $user = $userModel->find(1);
+
+   /**
+    * 获取用户的角色
+    * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    */
+   $roles = $user->userRoles()->pluck('name');
+
+   /**
+    * 获取用户所有权限
+    * @return \Illuminate\Support\Collection
+    */
+   $roles = $user->permissionsOwned()->pluck('admin_route');
+
+   /**
+    * 角色绑定权限（追加形式）
+    * @param integer $roleId
+    * @param array $permissions 权限数组
+    * @return null
+    */
+   $user->assignPermissionsToRole();
+
+   /**
+    * 角色移除全部权限
+    * @param integer $roleId
+    * @return integer
+    */
+   $user->removePermissionsFromRole();
+
+   /**
+    * 移除权限角色的缓存
+    * @param integer $permissionId
+    * @return integer
+    */
+   $user->removePermissionsFromRole($permissionId);
    ```
 
 ```
