@@ -50,22 +50,4 @@ trait HasPermissions
             return $role->permissions()->detach();
         }
     }
-
-    /**
-     * 移除权限关联角色缓存
-     * @param integer $permissionId
-     * @return boolean
-     */
-    public function removeRoleFromPermissions(int $permissionId)
-    {
-        $permission = Permission::find($permissionId);
-        if($permission) {
-            $roleIds = $permission->privileges()->pluck('role_id')->toArray();
-            foreach ($roleIds as $value) {
-                $roleCacheManager = new RoleCacheManager($value);
-                $roleCacheManager->clearRoleCache();
-            }
-        }
-        return true;
-    }
 }
