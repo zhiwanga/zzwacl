@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace XXXX;
 
 use App\Helpers\ApiResponse;
 use App\Models\PermissionModel;

@@ -3,7 +3,6 @@
 namespace Zzwacl\EasyACL\Traits;
 
 use Zzwacl\EasyACL\Cache\RoleCacheManager;
-use Zzwacl\EasyACL\Models\Permission;
 use Zzwacl\EasyACL\Models\Role;
 
 trait HasPermissions
