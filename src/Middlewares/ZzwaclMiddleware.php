@@ -21,7 +21,7 @@ class ZzwaclMiddleware
             }else{
                 $permission = new Permission();
             
-                $routePath = trim($request->getPathInfo(), '\/');
+                $routePath = $request->getPathInfo();
                 if(!$permission->hasRoutePermission($user, $routePath)) {
                     return response()->json(['code' => 403, 'message' => '权限不足，'.$routePath]);
                 }
