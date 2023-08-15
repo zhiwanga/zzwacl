@@ -3,6 +3,7 @@
 namespace Zzwacl\EasyACL\Traits;
 
 use Zzwacl\EasyACL\Cache\RoleCacheManager;
+use Zzwacl\EasyACL\Models\Permission;
 use Zzwacl\EasyACL\Models\Role;
 
 trait HasPermissions
@@ -25,10 +26,12 @@ trait HasPermissions
      * @param array $permissions
      * @return null
      */
-    public function assignPermissionsToRole(int $roleId, array $permissionIds)
+    public function assignPermissionsToRole(int $roleId, array $permissions)
     {
         $roleCacheManager = new RoleCacheManager($roleId);
-        $roleCacheManager->clearRoleCache();
+        $roleCacheManager->storePermissions($permissions);
+
+        $permissionIds = array_column($permissions, 'id');
         return Role::find($roleId)->permissions()->attach($permissionIds);
     }
 

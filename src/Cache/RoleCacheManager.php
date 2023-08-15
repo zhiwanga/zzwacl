@@ -20,7 +20,7 @@ class RoleCacheManager
      */
     public function storePermissions(array $permissions)
     {
-        Redis::sadd("zzwacl_role_route:$this->roleId", ...array_column($permissions, config('permission.column_names.admin_route', 'admin_route')));
+        Redis::sadd("zzwacl_role_route:$this->roleId", ...array_unique(array_filter(array_column($permissions, config('permission.column_names.admin_route', 'admin_route')))));
 
         Redis::set("zzwacl_role_data:$this->roleId", json_encode($permissions));
     }

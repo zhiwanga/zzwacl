@@ -19,7 +19,8 @@ class Role extends Model
     public function permissions()
     {
         $columnNames = config('permission.column_names');
-        return $this->belongsToMany(Permission::class, 'role_has_permissions', $columnNames['role_pivot_key'], $columnNames['permission_pivot_key']);
+        $tableNames = config('permission.table_names');
+        return $this->belongsToMany(config('permission.models.permission'), $tableNames['role_has_permissions'], $columnNames['role_pivot_key'], $columnNames['permission_pivot_key']);
     }
 
     /**

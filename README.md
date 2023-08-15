@@ -107,7 +107,6 @@
     */
    $roleModel->getPermissionsForRoles();
 
-
    $userModel = new UsersModel;
    $user = $userModel->find(1);
 
@@ -137,13 +136,6 @@
     * @return integer
     */
    $user->removePermissionsFromRole();
-
-   /**
-    * 移除权限角色的缓存
-    * @param integer $permissionId
-    * @return integer
-    */
-   $user->removePermissionsFromRole($permissionId);
    ```
 
 ```
