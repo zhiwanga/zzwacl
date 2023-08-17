@@ -7,10 +7,12 @@ use Illuminate\Support\Facades\Redis;
 class RoleCacheManager
 {
     private $roleId = 0;
+    private $prefix = '';
 
     public function __construct($roleId)
     {
         $this->roleId = $roleId;
+        $this->prefix = config('database.redis.options.prefix');
     }
 
     /**
@@ -31,7 +33,7 @@ class RoleCacheManager
      */
     public function getAdminRoutes()
     {
-        return Redis::smembers("zzwacl_role_route:$this->roleId");
+        return Redis::smembers($this->prefix.'zzwacl_role_route:'.$this->roleId);
     }
 
     /**
@@ -40,7 +42,7 @@ class RoleCacheManager
      */
     public function getPermissionsJson()
     {
-        $json = Redis::get("zzwacl_role_data:$this->roleId");
+        $json = Redis::get($this->prefix.'zzwacl_role_data:'.$this->roleId);
         return json_decode($json, true);
     }
 
