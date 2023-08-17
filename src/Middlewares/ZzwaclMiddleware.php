@@ -15,7 +15,7 @@ class ZzwaclMiddleware
         if(!$accessToken) {
             return response()->json(['code' => 401, 'message' => '未登录']);
         }else{
-            $user = Redis::get($accessToken);
+            $user = Redis::get(config('database.redis.options.prefix').$accessToken);
             if(!$user) {
                 return response()->json(['code' => 401, 'message' => '登录已过期']);
             }else{
