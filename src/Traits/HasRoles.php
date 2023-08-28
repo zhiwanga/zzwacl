@@ -37,7 +37,7 @@ trait HasRoles{
      */
     public function setUserLogin()
     {
-        $user = $this->first()->toArray();
+        $user = $this->toArray();
         $user['roles'] = array_column($this->userRoles()->select(config('permission.column_names.role_pivot_key'))->get()->toArray(), config('permission.column_names.role_pivot_key'));
 
         $jsonUser = json_encode($user);
