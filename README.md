@@ -1,11 +1,10 @@
-
-# 前后端分离权限管理包（避免中间件查询数据库）
+# **前后端分离权限管理包（避免中间件查询数据库）**
 
 ## 一. 配置
 
-* PHP 7.2 ^
-* 框架 Laravel
-* 安装 Redis
+- PHP 7.2 ^
+- 框架 Laravel
+- 安装 Redis
 
 ## 二. 前置步骤
 
@@ -51,12 +50,13 @@
 
    ```php
    use Zzwacl\EasyACL\Traits\HasRoles;
-   
+
    class UsersModel extends Model
    {
        use HasRoles;
    }
    ```
+
 2. 登录时使用 `setUserLogin` 方法设置用户缓存：
 
    ```php
@@ -86,52 +86,52 @@
 
 ## 四. 操作
 
-   ```php
-   use Zzwacl\EasyACL\Models\Role;
-   use Zzwacl\EasyACL\Traits\HasRoles;
+```php
+use Zzwacl\EasyACL\Models\Role;
+use Zzwacl\EasyACL\Traits\HasRoles;
 
-   $roleModel = new Role;
-   /**
-    * 获取角色权限
-    * @param integer $roleId
-    * @param integer $type 1：所有权限数据，1<：角色路由
-    * @return array
-    */ 
-   $roleModel->getPermissionsForRole();
-   /**
-    * 获取多个角色权限路由
-    * @param array $roleIds
-    * @return array
-    */
-   $roleModel->getPermissionsForRoles();
+$roleModel = new Role;
+/**
+ * 获取角色权限
+ * @param integer $roleId
+ * @param integer $type 1：所有权限数据，1<：角色路由
+ * @return array
+ */
+$roleModel->getPermissionsForRole();
+/**
+ * 获取多个角色权限路由
+ * @param array $roleIds
+ * @return array
+ */
+$roleModel->getPermissionsForRoles();
 
-   $userModel = new UsersModel;
-   $user = $userModel->find(1);
+$userModel = new UsersModel;
+$user = $userModel->find(1);
 
-   /**
-    * 获取用户的角色
-    * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-    */
-   $roles = $user->userRoles()->pluck('name');
+/**
+ * 获取用户的角色
+ * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+ */
+$roles = $user->userRoles()->pluck('name');
 
-   /**
-    * 获取用户所有权限
-    * @return \Illuminate\Support\Collection
-    */
-   $roles = $user->permissionsOwned()->pluck('admin_route');
+/**
+ * 获取用户所有权限
+ * @return \Illuminate\Support\Collection
+ */
+$roles = $user->permissionsOwned()->pluck('admin_route');
 
-   /**
-    * 角色绑定权限（追加形式）
-    * @param integer $roleId
-    * @param array $permissions 权限数组
-    * @return null
-    */
-   $user->assignPermissionsToRole();
+/**
+ * 角色绑定权限（追加形式）
+ * @param integer $roleId
+ * @param array $permissions 权限数组
+ * @return null
+ */
+$user->assignPermissionsToRole();
 
-   /**
-    * 角色移除全部权限
-    * @param integer $roleId
-    * @return integer
-    */
-   $user->removePermissionsFromRole();
-   ```
+/**
+ * 角色移除全部权限
+ * @param integer $roleId
+ * @return integer
+ */
+$user->removePermissionsFromRole();
+```
