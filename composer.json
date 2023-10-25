@@ -1,6 +1,6 @@
 {
     "name": "zzwacl/easyacl",
-    "description": "A simple and easy-to-use Access Control List (ACL) library for managing permissions.",
+    "description": "前后端分离权限管理包，避免中间件查询数据库",
     "type": "library",
     "keywords": ["acl", "access control", "permissions", "authorization", "authorization library", "zzwacl"],
     "license": "MIT",
