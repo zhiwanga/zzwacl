@@ -48,12 +48,19 @@
 
 ## 三. 方法
 
-1. 对需要验证权限的 `User` 模型引入 `HasRoles` trait：
+1. 对需要验证权限的 `User` `Role` 模型引入 `HasRoles` trait：
 
    ```php
    use Zzwacl\EasyACL\Traits\HasRoles;
 
-   class UsersModel extends Model
+   class UserModel extends Model
+   {
+       use HasRoles;
+   }
+
+   use Zzwacl\EasyACL\Traits\HasRoles;
+
+   class RoleModel extends Model
    {
        use HasRoles;
    }
@@ -107,7 +114,7 @@ $roleModel->getPermissionsForRole();
  */
 $roleModel->getPermissionsForRoles();
 
-$userModel = new UsersModel;
+$userModel = new UserModel;
 $user = $userModel->find(1);
 
 /**
