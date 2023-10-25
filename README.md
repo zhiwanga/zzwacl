@@ -78,7 +78,7 @@
    }
    ```
 
-3. 修改，删除角色时需调用此方法管理缓存
+3. 修改，删除角色时需调用此方法。详情请查看 demo/RoleController
 
    ```php
    $user->removePermissionsFromRole($roleId);
