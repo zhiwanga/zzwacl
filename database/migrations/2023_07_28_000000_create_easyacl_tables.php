@@ -28,9 +28,10 @@ class CreateEasyaclTables extends Migration
         // 权限
         Schema::create($tableNames['permissions'], function (Blueprint $table) {
             $table->id();
+            $table->string('name')->default('')->comment('栏目名称');
             $table->string('admin_route', 64)->default('')->comment('后端路由');
 
-            // 栏目名称，父级id，层级，前端页面路由，前端图标，是否显示等...
+            // 父级id，层级，前端页面路由，前端图标，是否显示等...
             $table->softDeletes();
             $table->timestamps();
         });

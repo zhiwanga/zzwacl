@@ -1,10 +1,16 @@
-```markdown
-# 前后端分离权限管理包（EasyACL）
 
-## 一. 前置步骤
+# 前后端分离权限管理包（避免中间件查询数据库）
+
+## 一. 配置
+
+* PHP 7.2 ^
+* 框架 Laravel
+* 安装 Redis
+
+## 二. 前置步骤
 
 1. 注册服务提供者，在 `config/app.php` 加入：
-   
+
    ```php
    'providers' => [
        Zzwacl\EasyACL\EasyACLServiceProvider::class,
@@ -34,43 +40,14 @@
 5. 将 `'zzwacl'` 加入路由中间件以验证权限：
 
    ```php
-   Route::group(['middleware' => 'zzwacl'], function () {
+   Route::middleware(['zzwacl'])->group(function () {
        Route::post('/test', [TestController::class, 'test']);
    });
    ```
 
-## 二. 配置
-
-1. PHP 7.2 以上版本
-2. 框架 Laravel
-3. 安装 Redis
-
 ## 三. 方法
 
-1. 登录时使用 `setUserLogin` 方法设置用户缓存：
-
-   ```php
-   $userModel = new UsersModel();
-   $user = $userModel->where('account', $requestData['account'])->orWhere('phone', $requestData['account'])->first();
-   if ($user && Hash::check($requestData['password'], $user->password)) {
-
-      // $oldToken = $user->access_token;
-
-      // 生成token，用户信息保存至缓存
-      $token = $user->setUserLogin();
-
-      // $user->update(['access_token' => $token]);
-
-      // 是否单点登录
-      // if($this->single) Redis::del($oldToken);
-
-      // 成功结果
-   }else{
-      // 失败结果
-   }
-   ```
-
-2. 对需要验证权限的 `User` 模型引入 `HasRoles` trait：
+1. 对需要验证权限的 `User` 模型引入 `HasRoles` trait：
 
    ```php
    use Zzwacl\EasyACL\Traits\HasRoles;
@@ -80,10 +57,31 @@
        use HasRoles;
    }
    ```
-3. 修改，删除角色时需要调用此方法，管理缓存
+2. 登录时使用 `setUserLogin` 方法设置用户缓存：
 
    ```php
-   $user->removePermissionsFromRole();
+   $userModel = new UserModel();
+   $user = $userModel->where('phone', $requestData['phone'])->first();
+   if ($user && Hash::check($requestData['password'], $user->password)) {
+         // 是否单点登录
+         // $oldToken = $user->access_token;
+         // if($this->single) Redis::del($oldToken);
+
+      // 生成token，用户信息保存至缓存
+      $token = $user->setUserLogin();
+
+      $user->update(['access_token' => $token]);
+
+      // 成功结果
+   }else{
+      // 失败结果
+   }
+   ```
+
+3. 修改，删除角色时需调用此方法管理缓存
+
+   ```php
+   $user->removePermissionsFromRole($roleId);
    ```
 
 ## 四. 操作
@@ -137,5 +135,3 @@
     */
    $user->removePermissionsFromRole();
    ```
-
-```
