@@ -1,6 +1,6 @@
 {
     "name": "zzwacl/easyacl",
-    "description": "前后端分离权限管理包，避免中间件查询数据库",
+    "description": "No need to query the permission management package of the database in the middleware",
     "type": "library",
     "keywords": ["acl", "access control", "permissions", "authorization", "authorization library", "zzwacl"],
     "license": "MIT",
