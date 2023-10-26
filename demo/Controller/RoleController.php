@@ -77,10 +77,13 @@ class RoleController extends Controller
 
             $role->removePermissionsFromRole($requestData['role_id']);
 
-            if($requestData['permission_ids']) {
-                $requestData['permission_ids'] = array_unique(array_filter($requestData['permission_ids']));
-                $permissions = PermissionModel::whereIn('id', $requestData['permission_ids'])->get()->toArray();
+            $permissionIds = array_filter($requestData['permission_ids']);
+            if($permissionIds) {
+                $permissionIds = array_unique($permissionIds);
+                $permissions = PermissionModel::whereIn('id', $permissionIds)->get()->toArray();
                 $role->assignPermissionsToRole($requestData['role_id'], $permissions);
+            }else{
+                $role->removePermissionsFromRole($requestData['role_id']);
             }
             return ApiResponse::success();
         }
