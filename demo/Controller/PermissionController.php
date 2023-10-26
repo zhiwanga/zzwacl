@@ -1,8 +1,9 @@
 <?php
 
-namespace XXXX;
+namespace XXX;
 
 use App\Helpers\ApiResponse;
+use App\Http\Controllers\Controller;
 use App\Models\PermissionModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -10,17 +11,33 @@ use Illuminate\Support\Facades\Validator;
 class PermissionController extends Controller
 {
     /**
-     * 栏目列表
+     * 栏目列表（有层级）
      * @param Request $request
      * @return json
      */
-    public function index()
+    public function menu(Request $request)
     {
-        $menus = PermissionModel::select('id', 'admin_route', 'name', 'parent_id', 'level', 'sort', 'home_route', 'home_icon', 'is_hide', 'created_at')
-                            ->orderBy('sort')
-                            ->get();
+        $data = PermissionModel::select('id', 'parent_id', 'name', 'level', 'admin_route', 'is_hide', 'sort')
+                                ->orderBy('sort')
+                                ->get()
+                                ->toArray();
 
-        return ApiResponse::success('', $menus);
+        $data = $this->buildTree($data);
+        return ApiResponse::success('', $data);
+    }
+
+    /**
+     * 栏目列表（无层级）
+     * @param Request $request
+     * @return void
+     */
+    public function index(Request $request)
+    {
+        $data = PermissionModel::select('id', 'parent_id', 'name', 'level', 'admin_route', 'is_hide', 'sort')
+                                ->orderBy('sort')
+                                ->get()
+                                ->toArray();
+        return ApiResponse::success('', $data);
     }
 
     /**
@@ -30,11 +47,12 @@ class PermissionController extends Controller
      */
     public function create(Request $request)
     {
-        $requestData = $request->only('admin_route', 'name', 'parent_id', 'home_route', 'home_icon', 'is_hide');
+        $requestData = $request->only('name', 'admin_route', 'parent_id', 'is_hide');
 
         $rules = [
             'name'          => 'required',
             'parent_id'     => 'required|numeric',
+            'admin_route'   => 'present',
             'is_hide'       => 'required|numeric|min:1',
         ];
 
@@ -45,12 +63,10 @@ class PermissionController extends Controller
         }else{
             $level = PermissionModel::where('id', $requestData['parent_id'])->value('level');
             $insert = [
-                'admin_route'   => $requestData['admin_route'],
                 'name'          => $requestData['name'],
+                'admin_route'   => $requestData['admin_route'],
                 'level'         => $level+1,
                 'parent_id'     => $requestData['parent_id'],
-                'home_route'    => $requestData['home_route'],
-                'home_icon'     => $requestData['home_icon'],
                 'is_hide'       => $requestData['is_hide']
             ];
 
@@ -66,15 +82,13 @@ class PermissionController extends Controller
      */
     public function update(Request $request)
     {
-        $requestData = $request->only('permission_id', 'admin_route', 'name', 'parent_id', 'home_route', 'home_icon', 'is_hide');
-
+        $requestData = $request->only('permission_id', 'name', 'admin_route', 'parent_id', 'is_hide');
         $rules = [
-            'admin_route'   => 'required',
+            'permission_id' => 'required',
             'name'          => 'required',
-            'parent_id'     => 'required',
-            'home_route'    => 'required',
-            'home_icon'     => 'required',
-            'is_hide'       => 'required'
+            'admin_route'   => 'present',
+            'parent_id'     => 'required|numeric',
+            'is_hide'       => 'required|numeric|min:1',
         ];
 
         $validator = Validator::make($requestData, $rules);
@@ -84,12 +98,10 @@ class PermissionController extends Controller
         }else{
             $level = PermissionModel::where('id', $requestData['parent_id'])->value('level');
             $update = [
-                'admin_route'   => $requestData['admin_route'],
                 'name'          => $requestData['name'],
+                'admin_route'   => $requestData['admin_route'],
                 'level'         => $level+1,
                 'parent_id'     => $requestData['parent_id'],
-                'home_route'    => $requestData['home_route'],
-                'home_icon'     => $requestData['home_icon'],
                 'is_hide'       => $requestData['is_hide']
             ];
 
@@ -112,5 +124,26 @@ class PermissionController extends Controller
             PermissionModel::where('id', $id)->delete();
             return ApiResponse::success();
         }
+    }
+
+    // ————————————————————————————————————————————————————————————————————内置方法————————————————————————————————————————————————————————————————————
+    /**
+     * 处理菜单层级
+     * @param [type] $data
+     * @param [type] $parentId
+     * @return array
+     */
+    private function buildTree($data, $parentId = null) {
+        $tree = array();
+        foreach ($data as $row) {
+            if ($row['parent_id'] == $parentId) {
+                $children = $this->buildTree($data, $row['id']);
+                if ($children) {
+                    $row['children'] = $children;
+                }
+                $tree[] = $row;
+            }
+        }
+        return $tree;
     }
 }
