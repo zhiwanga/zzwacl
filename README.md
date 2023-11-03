@@ -1,12 +1,12 @@
 ## 前后端分离权限管理包
-- 避免中间件查询数据库
-- 所有权限使用 redis 管理
+ - 避免中间件查询数据库
+ - 所有权限使用 redis 管理
 
 ## 一. 配置
 
-- PHP 7.2 ^
-- 框架 Laravel
-- 安装 Redis
+ - PHP 7.2 ^
+ - 框架 Laravel
+ - 安装 Redis
 
 ## 二. 前置步骤
 
@@ -106,13 +106,13 @@ $roleModel = new Role;
  * @param integer $type 1：所有权限数据，1<：角色路由
  * @return array
  */
-$roleModel->getPermissionsForRole();
+$roleModel->getPermissionsForRole($roleId);
 /**
  * 获取多个角色权限路由
  * @param array $roleIds
  * @return array
  */
-$roleModel->getPermissionsForRoles();
+$roleModel->getPermissionsForRoles([1,2,3]);
 
 $userModel = new UserModel;
 $user = $userModel->find(1);
@@ -144,3 +144,9 @@ $user->assignPermissionsToRole();
  */
 $user->removePermissionsFromRole();
 ```
+
+## 五.可能出现的问题
+
+1. 权限不足
+ - 保证 user_has_roles 表用户有关联角色
+ - 保证 permissions 表有需要访问的路由
