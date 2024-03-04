@@ -45,6 +45,7 @@ class RoleController extends Controller
             $role = new RoleModel();
             $roleCreate = $role->create(['name' => $requestData['name']]);
             if($requestData['permission_ids']) {
+                $permissions = PermissionModel::whereIn('id', $requestData['permission_ids'])->get()->toArray();
                 $role->assignPermissionsToRole($roleCreate->id, $requestData['permission_ids']);
             }
 
@@ -82,8 +83,6 @@ class RoleController extends Controller
                 $permissionIds = array_unique($permissionIds);
                 $permissions = PermissionModel::whereIn('id', $permissionIds)->get()->toArray();
                 $role->assignPermissionsToRole($requestData['role_id'], $permissions);
-            }else{
-                $role->removePermissionsFromRole($requestData['role_id']);
             }
             return ApiResponse::success();
         }
