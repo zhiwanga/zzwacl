@@ -46,7 +46,7 @@ class RoleController extends Controller
             $roleCreate = $role->create(['name' => $requestData['name']]);
             if($requestData['permission_ids']) {
                 $permissions = PermissionModel::whereIn('id', $requestData['permission_ids'])->get()->toArray();
-                $role->assignPermissionsToRole($roleCreate->id, $requestData['permission_ids']);
+                $role->assignPermissionsToRole($roleCreate->id, $permissions);
             }
 
             return ApiResponse::success();

@@ -134,7 +134,7 @@
    /**
     * 角色绑定权限（追加形式）
     * @param integer $roleId
-    * @param array $permissions 权限数组
+    * @param array $permissions 权限数组二维数组
     * @return null
     */
    $user->assignPermissionsToRole();
